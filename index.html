@@ -3,13 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fruits Shop</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <h1>Fruits Shop</h1>
     <ul class="fruits"></ul>
-
+   
+    <div class="backdrop is-hidden">
+        <div class="modal">
+            <form action="" class="modal-form">
+                <p class="modal-text"></p>
+                <label for="quantity">Введіть кількість фруктів</label>
+                <input type="number" class="modal-input" id="quantity">
+                
+                <label for="phone">Введіть номер телефону</label>
+                <input type="number" class="modal-input-phone" id="phone">
+                
+                <button type="submit" class="modal-submit">Buy</button>
+                <button type="button" class="close-modal">Close</button>
+            </form>
+        </div>
+    </div>
 
     <script src="./index.js" type="module"></script> 
 </body>

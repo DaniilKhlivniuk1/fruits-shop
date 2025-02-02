@@ -1,3 +1,8 @@
+const fruitsList = document.querySelector(".fruits");
+const backdrop = document.querySelector(".backdrop");
+const modalText = document.querySelector(".modal-text");
+const closeModalBtn = document.querySelector(".close-modal");
+
 const fruits = [
   {
     title: "pineaple",
@@ -46,12 +51,44 @@ const fruits = [
   }
 ];
 
-const fruitElements = fruits.map(fruit => `    <li class="fruits-element">
-        <h3 class="fruits-title">${fruit.title}</h3>
-        <p class="fruits-price">${fruit.price}</p>
-        <img class="fruits-photo" src="${fruit.photo}" alt="${fruit.title}">
-    </li>
-`).join("");
+// Функція для рендеру фруктів
+function renderFruits() {
+  fruits.forEach((fruit) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+          <img src="${fruit.photo}" alt="${fruit.title}">
+          <h2>${fruit.title}</h2>
+          <p>Price: $${fruit.price}</p>
+          <button class="buy-btn" data-title="${fruit.title}" data-price="${fruit.price}">Buy</button>
+      `;
+      fruitsList.appendChild(li);
+  });
+}
 
-const fruitsList = document.querySelector(".fruits")
-fruitsList.innerHTML = fruitElements;
+// Функція відкриття модального вікна
+function openModal(event) {
+  if (!event.target.classList.contains("buy-btn")) return;
+
+  const title = event.target.dataset.title;
+  const price = event.target.dataset.price;
+
+  modalText.textContent = `Ви купуєте ${title} за $${price}`;
+  backdrop.classList.remove("is-hidden"); // Відкриваємо модалку
+}
+
+// Функція закриття модального вікна
+function closeModal() {
+  backdrop.classList.add("is-hidden"); // Закриваємо модалку
+}
+
+// Додаємо обробники подій
+document.addEventListener("DOMContentLoaded", renderFruits);
+fruitsList.addEventListener("click", openModal);
+closeModalBtn.addEventListener("click", closeModal);
+
+// Закриття по кліку поза модалкою
+backdrop.addEventListener("click", (event) => {
+  if (event.target === backdrop) {
+      closeModal();
+  }
+});
