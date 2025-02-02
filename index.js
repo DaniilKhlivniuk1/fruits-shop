@@ -1,8 +1,3 @@
-const fruitsList = document.querySelector(".fruits");
-const backdrop = document.querySelector(".backdrop");
-const modalText = document.querySelector(".modal-text");
-const closeModalBtn = document.querySelector(".close-modal");
-
 const fruits = [
   {
     title: "pineaple",
@@ -51,44 +46,42 @@ const fruits = [
   }
 ];
 
-// Функція для рендеру фруктів
-function renderFruits() {
-  fruits.forEach((fruit) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-          <img src="${fruit.photo}" alt="${fruit.title}">
-          <h2>${fruit.title}</h2>
-          <p>Price: $${fruit.price}</p>
-          <button class="buy-btn" data-title="${fruit.title}" data-price="${fruit.price}">Buy</button>
-      `;
-      fruitsList.appendChild(li);
-  });
-}
+const fruitElements = fruits.map(fruit => `    <li class="fruits-element">
+        <h3 class="fruits-title">${fruit.title}</h3>
+        <p class="fruits-price">${fruit.price}</p>
+        <img class="fruits-photo" src="${fruit.photo}" alt="${fruit.title}">
+        <button clas="fruit-button" type="button">Купити фрукт</button>
+    </li>
+`).join("");
 
-// Функція відкриття модального вікна
-function openModal(event) {
-  if (!event.target.classList.contains("buy-btn")) return;
+const fruitsList = document.querySelector(".fruits")
+fruitsList.innerHTML = fruitElements;
 
-  const title = event.target.dataset.title;
-  const price = event.target.dataset.price;
+const btns = document.querySelectorAll(".fruit-button")
+console.log(btns)
 
-  modalText.textContent = `Ви купуєте ${title} за $${price}`;
-  backdrop.classList.remove("is-hidden"); // Відкриваємо модалку
-}
-
-// Функція закриття модального вікна
-function closeModal() {
-  backdrop.classList.add("is-hidden"); // Закриваємо модалку
-}
-
-// Додаємо обробники подій
-document.addEventListener("DOMContentLoaded", renderFruits);
-fruitsList.addEventListener("click", openModal);
-closeModalBtn.addEventListener("click", closeModal);
-
-// Закриття по кліку поза модалкою
-backdrop.addEventListener("click", (event) => {
-  if (event.target === backdrop) {
-      closeModal();
+// btns.forEach((btn) => {
+//   btn.addEventListener("click", openModal)
+//   и
+// })
+// Оптимізуємо додаток щоб було менше слухачів.
+// Зараз є 6 слухачів бо на кожній кнопчці "купити" весить слухачю
+// Застосуємо делегування подій та повісимо одного слухачча на їх спільного предка (спілбний предок ul)
+fruitsList.addEventListener("click", (event) => {
+  if (event.target.nodeName === "BUTTON"){
+    openModal()
   }
-});
+  } )
+
+
+const modalClose = document.querySelector(".backdrop")
+function openModal(params){
+
+  modalClose.classList.remove("is-hidden")
+}
+
+const btnsClose = document.querySelectorAll(".close-modal")
+btnsClose.addEventListener("click", (event )=> {
+  
+  modalClose.classList.add("is-hidden")
+})
